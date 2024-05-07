@@ -90,7 +90,7 @@ class Tokeniser {
                 case '/': addToken(F_SLASH); break;                             // /
 
                 case '=':
-                    if (match('>', false)) { addToken(RETURNS); current++; }    // =>
+                    if (match('>', false)) { addToken(RETURNS); current++; break; }    // =>
                     addToken(match('=', true) ? EQUAL_EQUAL : EQUAL);           // ==
                     break;
                 case '!':
@@ -114,7 +114,7 @@ class Tokeniser {
                     break;
 
                 case '`':                                                       // `Comments`
-                    while (!match('`')) { continue; }
+                    while (!match('`', true)) { continue; }
                     break;
 
                 default:

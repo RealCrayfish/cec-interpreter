@@ -1,7 +1,0 @@
-```
-Simple Hello World Program
-```
-
-fuc HelloWorld() => () = {
-    say("Hello, World!");
-}

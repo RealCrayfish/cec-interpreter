@@ -18,7 +18,8 @@ enum TokenType {
   // Single-character tokens.
   LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE,
   COMMA, DOT, MINUS, PLUS, SEMICOLON, F_SLASH, B_SLASH, STAR,
-  LEFT_ABRACE, RIGHT_ABRACE,
+  LEFT_ABRACE, RIGHT_ABRACE, LEFT_SBRACE, RIGHT_SBRACE,
+  RETURNS,
 
   // One or two character tokens.
   NOT, NOT_EQUAL,
@@ -67,53 +68,52 @@ class Tokeniser {
 
         bool isAtEnd() { return current >= source.length(); }
         char advance() { return source[current++]; }
-        bool match(char expected) {
+        bool match(char expected, bool incr) {
             if (isAtEnd()) return false;
             if (source[current] != expected) return false;
-            current++;
+            if (incr) current++;
             return true;
         }
 
         void scanToken() {
             char c = advance();
             switch (c) {
-                case '(': addToken(LEFT_PAREN); break;
-                case ')': addToken(RIGHT_PAREN); break;
-                case '{': addToken(LEFT_BRACE); break;
-                case '}': addToken(RIGHT_BRACE); break;
-                case '[': addToken(LEFT_ABRACE); break;
-                case ']': addToken(RIGHT_ABRACE); break;
-                case ',': addToken(COMMA); break;
-                case '.': addToken(DOT); break;
-                case '-': addToken(MINUS); break;
-                case '+': addToken(PLUS); break;
-                case ';': addToken(SEMICOLON); break;
-                case '*': addToken(STAR); break;
+                case '(': addToken(LEFT_PAREN); break; case ')': addToken(RIGHT_PAREN); break; // ()
+                case '{': addToken(LEFT_BRACE); break; case '}': addToken(RIGHT_BRACE); break; // {}
+                case '[': addToken(LEFT_SBRACE); break; case ']': addToken(RIGHT_SBRACE); break; // []
+                case ',': addToken(COMMA); break;                               // ,
+                case '.': addToken(DOT); break;                                 // .
+                case '-': addToken(MINUS); break;                               // -
+                case '+': addToken(PLUS); break;                                // +
+                case ';': addToken(SEMICOLON); break;                           // ;
+                case '*': addToken(STAR); break;                                // *
+                case '/': addToken(F_SLASH); break;                             // /
 
                 case '=':
-                    addToken(match('=') ? EQUAL_EQUAL : EQUAL);
+                    if (match('>', false)) { addToken(RETURNS); current++; }    // =>
+                    addToken(match('=', true) ? EQUAL_EQUAL : EQUAL);           // ==
                     break;
                 case '!':
-                    if (match('=')) { addToken(NOT_EQUAL); break; }
+                    if (match('=', true)) { addToken(NOT_EQUAL); break; }       // !=
                     cout << "Error: Unexpected character.\n"; break;
                 case '<':
-                    addToken(match('=') ? LESS_EQUAL : LESS);
+                    addToken(match('=', true) ? LESS_EQUAL : LESS);             // <=
                     break;
                 case '>':
-                    addToken(match('=') ? GREATER_EQUAL : GREATER);
+                    addToken(match('=', true) ? GREATER_EQUAL : GREATER);       // >=
                     break;
 
-                case ' ':
-                case '\r':
-                case '\t':
-                    // Ignore whitespace.
-                    break;
+                case ' ':                                                       // Whitespace
+                case '\r':                                                      //
+                case '\t':                                                      //
+                    // Ignore whitespace.                                       //
+                    break;                                                      //
 
-                case '\n':
+                case '\n':                                                      // \n
                     line++;
                     break;
 
-                case '`':
+                case '`':                                                       // `Comments`
                     while (!match('`')) { continue; }
                     break;
 

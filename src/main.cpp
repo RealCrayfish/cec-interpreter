@@ -35,8 +35,8 @@ enum TokenType {
   DICT, STRUCT, LIST,
   IF, ELIF, ELSE,
   TRUE, FALSE, NIL,
-  LET, VAR,
-  FUN,
+
+  LET, VAR,FUN,
   LOOP, BARK,
   AND, OR,
   SAY
@@ -66,6 +66,7 @@ class Tokeniser {
             tokens.push_back(Token(type, source.substr(start, current-start), line));
         }
 
+        static bool isDigit(char c) { return c >= '0' && c <= '9'; }
         bool isAtEnd() { return current >= (source.length()); }
         char advance() { return source[current++]; }
         bool match(char expected, bool incr) {
@@ -88,7 +89,7 @@ class Tokeniser {
                 case '+': addToken(PLUS); break;                                // +
                 case ';': addToken(SEMICOLON); break;                           // ;
                 case '*': addToken(STAR); break;                                // *
-                case '/': addToken(F_SLASH); break;                             // /
+                case '/': addToken(F_SLASH); break;
 
                 case '=':
                     if (match('>', false)) { current++; addToken(RETURNS); break; }    // =>

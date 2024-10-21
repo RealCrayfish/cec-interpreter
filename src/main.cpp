@@ -118,6 +118,20 @@ class Tokeniser {
                 case '`':                                                       // `Comments`
                     while (!match('`', true)) { }
                     break;
+                case '"':
+                    start = current;
+                    while (!match('"', false)) { current++;}
+                    addToken(STRING);
+                    current++;
+                    break;
+                case 'S':
+                    if (match('A', false)) {
+                        current++;
+                        if (match('Y', false)) {
+                            current++;
+                            addToken(SAY);
+                        }
+                    }
 
                 default:
                     cout << "Error: Unexpected character.\n";

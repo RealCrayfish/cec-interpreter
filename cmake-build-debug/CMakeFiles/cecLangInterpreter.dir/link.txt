@@ -1,0 +1,3 @@
+"C:\Program Files\JetBrains\CLion 243.16718.30\bin\cmake\win\x64\bin\cmake.exe" -E rm -f CMakeFiles\cecLangInterpreter.dir/objects.a
+C:\PROGRA~1\JETBRA~1\CLION2~1.30\bin\mingw\bin\ar.exe qc CMakeFiles\cecLangInterpreter.dir/objects.a @CMakeFiles\cecLangInterpreter.dir\objects1.rsp
+C:\PROGRA~1\JETBRA~1\CLION2~1.30\bin\mingw\bin\G__~1.EXE -g -Wl,--whole-archive CMakeFiles\cecLangInterpreter.dir/objects.a -Wl,--no-whole-archive -o cecLangInterpreter.exe -Wl,--out-implib,libcecLangInterpreter.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cecLangInterpreter.dir\linkLibs.rsp

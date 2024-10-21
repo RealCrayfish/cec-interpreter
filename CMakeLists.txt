@@ -8,4 +8,4 @@ include_directories(include)
 add_executable(cecLangInterpreter
     include/cec.hpp
     include/utilities.hpp
-    src/main.cpp)
+        src/main.cpp)
